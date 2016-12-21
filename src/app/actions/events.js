@@ -3,7 +3,6 @@ import { createAction } from 'redux-act'
 import { push } from 'react-router-redux'
 import { endProcessing, startProcessing, errorProcessing } from '../actions/core'
 
-export const loadEvents = createAction('LOAD_EVENTS')
 export const loadNextEvents = createAction('LOAD_NEXT_EVENTS')
 export const loadCompleted = createAction('LOAD_COMPLETED')
 export const loadQueue = createAction('LOAD_QUEUE')

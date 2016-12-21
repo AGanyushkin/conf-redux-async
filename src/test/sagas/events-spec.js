@@ -1,8 +1,8 @@
 import chai from 'chai'
-import {call,put} from 'redux-saga/effects'
+import {call,put,take} from 'redux-saga/effects'
 import {loadNextEventsSaga, putNewEventSaga} from '../../app/sagas/events'
 import {startProcessing,endProcessing,errorProcessing} from '../../app/actions/core'
-import {events,nextEvents,putNewEvent} from '../../app/actions/events'
+import {events,nextEvents, putNewEvent,loadNextEvents} from '../../app/actions/events'
 import {push} from 'react-router-redux'
 
 /**
@@ -13,6 +13,8 @@ import {push} from 'react-router-redux'
 describe('Event Sagas', () => {
     it('should pass for loadNextEventsSaga', () => {
         const g = loadNextEventsSaga()
+
+        g.next().value.should.be.deep.equal(take(loadNextEvents.getType()))
 
         g.next().value.should.be.deep.equal(put(startProcessing()))
         g.next().value.should.be.deep.equal(call(fetch, '/api/events/next'))
@@ -25,14 +27,19 @@ describe('Event Sagas', () => {
     })
     it('should fail for loadNextEventsSaga', () => {
         const g = loadNextEventsSaga({})
+
+        g.next().value.should.be.deep.equal(take(loadNextEvents.getType()))
+
         g.next().value.should.be.deep.equal(put(startProcessing()))
         g.throw('test-value').value.should.be.deep.equal(put(errorProcessing('test-value')))
     })
 
     it('should pass for putNewEventSaga', () => {
-        const g = putNewEventSaga(putNewEvent({x:1,y:2}))
+        const g = putNewEventSaga()
 
-        g.next().value.should.be.deep.equal(put(startProcessing()))
+        g.next().value.should.be.deep.equal(take(putNewEvent.getType()))
+
+        g.next(putNewEvent({x:1,y:2})).value.should.be.deep.equal(put(startProcessing()))
         g.next().value.should.be.deep.equal(
             call(fetch, '/api/events', {
                 method: 'put',
@@ -46,9 +53,11 @@ describe('Event Sagas', () => {
         g.next().value.should.be.deep.equal(put(push('/suggestions')))
     })
     it('should fail for putNewEventSaga', () => {
-        const g = putNewEventSaga(putNewEvent({x:1,y:2}))
+        const g = putNewEventSaga()
 
-        g.next().value.should.be.deep.equal(put(startProcessing()))
+        g.next().value.should.be.deep.equal(take(putNewEvent.getType()))
+
+        g.next(putNewEvent({x:1,y:2})).value.should.be.deep.equal(put(startProcessing()))
         g.throw('test-value').value.should.be.deep.equal(put(errorProcessing('test-value')))
     })
 })
