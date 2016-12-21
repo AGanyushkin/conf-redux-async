@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import React from 'react'
-import { voteAsync, unvoteAsync, assignAsync, loadSuggestionsAsync } from '../actions/events'
+import { like, dislike, assign, loadSuggestions } from '../actions/events'
 import { push } from 'react-router-redux'
 import EventItem from '../conponents/EventItem'
 import { Segment, Dimmer, Loader } from 'semantic-ui-react'
@@ -9,7 +9,7 @@ import {bindActionCreators} from 'redux'
 
 class SuggestionList extends React.Component {
     componentDidMount() {
-        this.props.loadSuggestionsAsync()
+        this.props.loadSuggestions()
     }
     render() {
         return (
@@ -24,9 +24,9 @@ class SuggestionList extends React.Component {
                                    {...event}
                                    accountById={this.props.accountById}
                                    voted={event.voters.filter(vid => vid === this.props.accountId).length}
-                                   doVote={() => this.props.voteAsync(eventId, this.props.accountId)}
-                                   doUnvote={() => this.props.unvoteAsync(eventId, this.props.accountId)}
-                                   assign={() => this.props.assignAsync(eventId, this.props.accountId)}>
+                                   doLike={() => this.props.like({eid: eventId, aid: this.props.accountId})}
+                                   doDislike={() => this.props.dislike({eid: eventId, aid: this.props.accountId})}
+                                   assign={() => this.props.assign({eid: eventId, aid: this.props.accountId})}>
                         </EventItem>
                     )
                 })}
@@ -46,9 +46,9 @@ export default connect(
         }
     },
     dispatch => bindActionCreators({
-        voteAsync,
-        unvoteAsync,
-        assignAsync,
-        loadSuggestionsAsync
+        like,
+        dislike,
+        assign,
+        loadSuggestions
     }, dispatch)
 )(SuggestionList)

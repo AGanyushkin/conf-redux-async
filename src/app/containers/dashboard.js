@@ -3,12 +3,12 @@ import React from 'react'
 import EventItem from '../conponents/EventItem'
 import { Divider } from 'semantic-ui-react'
 import {bindActionCreators} from 'redux'
-import {loadNextEventsAsync, loadCompletedAsync} from '../actions/events'
+import {loadNextEvents, loadCompleted} from '../actions/events'
 
 class Dashboard extends React.Component {
     componentDidMount() {
-        this.props.loadNextEventsAsync()
-        this.props.loadCompletedAsync()
+        this.props.loadNextEvents()
+        this.props.loadCompleted()
     }
     showList(list) {
         return list.map(eventId => {
@@ -44,7 +44,7 @@ export default connect(
         }
     },
     dispatch => bindActionCreators({
-        loadNextEventsAsync,
-        loadCompletedAsync
+        loadNextEvents,
+        loadCompleted
     }, dispatch)
 )(Dashboard)

@@ -1,9 +1,10 @@
 import { connect } from 'react-redux'
 import React from 'react'
-import { putNewEventAsync } from '../actions/events'
+import { putNewEvent } from '../actions/events'
 import { goBack } from 'react-router-redux'
 import { Input, Button, Header, Divider, Dimmer, Loader, Segment, Checkbox } from 'semantic-ui-react'
 import TinyMCE from 'react-tinymce'
+import {bindActionCreators} from 'redux'
 
 class NewEvent extends React.Component {
     constructor(props) {
@@ -15,7 +16,7 @@ class NewEvent extends React.Component {
         }
     }
     putNew() {
-        this.props.putNew({
+        this.props.putNewEvent({
             title: this.state.title,
             description: this.state.content,
             createdBy: this.props.accountId,
@@ -55,7 +56,7 @@ class NewEvent extends React.Component {
                     <Divider hidden />
                     <Checkbox label='assigne to me' onClick={() => { this.state.assigneToMe = !this.state.assigneToMe }} />
                     <Divider hidden />
-                    <Button onClick={this.props.cancel}>Cancel</Button>
+                    <Button onClick={this.props.goBack}>Cancel</Button>
                     <Button positive onClick={() => this.putNew()}>Save</Button>
                 </Segment>
             </div>
@@ -71,11 +72,9 @@ export default connect(
         }
     },
     dispatch => {
-        return {
-            putNew: (event) => {
-                dispatch(putNewEventAsync(event))
-            },
-            cancel: () => dispatch(goBack())
-        }
+        return bindActionCreators({
+            goBack,
+            putNewEvent
+        }, dispatch)
     }
 )(NewEvent)

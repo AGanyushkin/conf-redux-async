@@ -4,11 +4,11 @@ import EventItem from '../conponents/EventItem'
 import { Segment } from 'semantic-ui-react'
 import '../style/common.sass'
 import {bindActionCreators} from 'redux'
-import {loadCompletedAsync} from '../actions/events'
+import {loadCompleted} from '../actions/events'
 
 class Archive extends React.Component {
     componentDidMount() {
-        this.props.loadCompletedAsync()
+        this.props.loadCompleted()
     }
     render() {
         return (
@@ -36,6 +36,6 @@ export default connect(
         }
     },
     dispatch => bindActionCreators({
-        loadCompletedAsync
+        loadCompleted
     }, dispatch)
 )(Archive)

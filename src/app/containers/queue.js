@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import React from 'react'
-import { voteAsync, unvoteAsync, loadQueueAsync } from '../actions/events'
+import { like, dislike, loadQueue } from '../actions/events'
 import EventItem from '../conponents/EventItem'
 import { Segment, Dimmer, Loader } from 'semantic-ui-react'
 import '../style/common.sass'
@@ -8,7 +8,7 @@ import {bindActionCreators} from 'redux'
 
 class Queue extends React.Component {
     componentDidMount() {
-        this.props.loadQueueAsync()
+        this.props.loadQueue()
     }
     render() {
         return (
@@ -23,8 +23,8 @@ class Queue extends React.Component {
                             {...event}
                             accountById={this.props.accountById}
                             voted={event.voters.filter(vid => vid === this.props.accountId).length}
-                            doVote={() => this.props.voteAsync(eventId, this.props.accountId)}
-                            doUnvote={() => this.props.unvoteAsync(eventId, this.props.accountId)}>
+                            doLike={() => this.props.like({eid: eventId, aid: this.props.accountId})}
+                            doDislike={() => this.props.dislike({eid: eventId, aid: this.props.accountId})}>
                         </EventItem>
                     )
                 })}
@@ -44,8 +44,8 @@ export default connect(
         }
     },
     dispatch => bindActionCreators({
-        voteAsync,
-        unvoteAsync,
-        loadQueueAsync
+        like,
+        dislike,
+        loadQueue
     }, dispatch)
 )(Queue)

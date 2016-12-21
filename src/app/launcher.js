@@ -11,8 +11,11 @@ import router from './routes'
 import eventsReducer from './reducers/events'
 import layoutReducer from './reducers/layout'
 import accountReducer from './reducers/account'
-import thunk from 'redux-thunk'
 import mocks from '../mock'
+import createSagaMiddleware from 'redux-saga'
+import rootSaga from './sagas'
+
+const sagaMiddleware = createSagaMiddleware()
 
 const store = createStore(
     combineReducers({
@@ -25,12 +28,12 @@ const store = createStore(
     applyMiddleware(
         logger(),
         routerMiddleware(browserHistory),
-        thunk
+        sagaMiddleware
     )
 )
 
 const history = syncHistoryWithStore(browserHistory, store)
-
+sagaMiddleware.run(rootSaga)
 mocks()
 
 ReactDOM.render(

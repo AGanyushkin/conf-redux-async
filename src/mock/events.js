@@ -83,11 +83,9 @@ export default function mockEvents() {
         }
     })
 
-    fetchMock.put('/api/events/vote', (url,opts) => {
+    fetchMock.put('/api/events/like', (url,opts) => {
         const {eid, aid} = opts.body
-
         events[eid].voters.push(aid)
-
         return {
             body: {
                 eid
@@ -95,11 +93,9 @@ export default function mockEvents() {
         }
     })
 
-    fetchMock.put('/api/events/unvote', (url,opts) => {
+    fetchMock.put('/api/events/dislike', (url,opts) => {
         const {eid, aid} = opts.body
-
         events[eid].voters = events[eid].voters.filter(v => v !== aid)
-
         return {
             body: {
                 eid

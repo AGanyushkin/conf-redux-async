@@ -1,16 +1,16 @@
 import { createReducer } from 'redux-act'
-import { loadEvents, loadNextEvents, loadCompleted, loadQueue, loadSuggestions} from '../actions/events'
+import { events, nextEvents, completed, queue, suggestions} from '../actions/events'
 
 export default createReducer({
-    [loadEvents]: (state, payload) => Object.assign(
+    [events]: (state, payload) => Object.assign(
         {}, state, {
             eventById: Object.assign({}, state.eventById, payload)
         }
     ),
-    [loadNextEvents]: (state, payload) => Object.assign({}, state, {nextEvents: payload}),
-    [loadCompleted]: (state, payload) => Object.assign({}, state, {completed: payload}),
-    [loadQueue]: (state, payload) => Object.assign({}, state, {queue: payload}),
-    [loadSuggestions]: (state, payload) => Object.assign({}, state, {suggestions: payload})
+    [nextEvents]: (state, payload) => Object.assign({}, state, {nextEvents: payload}),
+    [completed]: (state, payload) => Object.assign({}, state, {completed: payload}),
+    [queue]: (state, payload) => Object.assign({}, state, {queue: payload}),
+    [suggestions]: (state, payload) => Object.assign({}, state, {suggestions: payload})
 }, {
     nextEvents: [],
     completed: [],

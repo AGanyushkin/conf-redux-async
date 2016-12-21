@@ -30,8 +30,8 @@ export default createReducer({
             case '/':
                 activeView = 'dashboard'
                 break;
-            case '/backlog':
-                activeView = 'backlog'
+            case '/queue':
+                activeView = 'queue'
                 break;
             case '/archive':
                 activeView = 'archive'

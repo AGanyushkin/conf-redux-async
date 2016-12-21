@@ -29,8 +29,8 @@ export default class EventItem extends React.Component {
                                         : null}
                                 </div>
                                 {this.props.voted
-                                    ? <Button label={{ content: this.props.voters.length }} icon='heart' content='unlike' labelPosition='left' onClick={this.props.doUnvote} />
-                                    : <Button label={{ content: this.props.voters.length }} color="green" icon='heart' content='like' labelPosition='left' onClick={this.props.doVote} />
+                                    ? <Button label={{ content: this.props.voters.length }} icon='heart' content='unlike' labelPosition='left' onClick={this.props.doDislike} />
+                                    : <Button label={{ content: this.props.voters.length }} color="green" icon='heart' content='like' labelPosition='left' onClick={this.props.doLike} />
                                 }
                                 { this.props.speaker ? <Button label={{ content: this.accNameByID(this.props.speaker) }} content='Speaker' labelPosition='left' /> : null }
 
