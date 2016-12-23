@@ -1,7 +1,6 @@
 import '../polyfills'
 import { createAction } from 'redux-act'
 import { push } from 'react-router-redux'
-import { endProcessing, startProcessing, errorProcessing } from '../actions/core'
 
 export const loadNextEvents = createAction('LOAD_NEXT_EVENTS')
 export const loadCompleted = createAction('LOAD_COMPLETED')

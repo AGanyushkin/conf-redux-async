@@ -4,6 +4,9 @@ import {loadNextEventsSaga, putNewEventSaga} from '../../app/sagas/events'
 import {startProcessing,endProcessing,errorProcessing} from '../../app/actions/core'
 import {events,nextEvents, putNewEvent,loadNextEvents} from '../../app/actions/events'
 import {push} from 'react-router-redux'
+import fetchMock from 'fetch-mock'
+import configureMockStore from 'redux-mock-store'
+import createSagaMiddleware from 'redux-saga'
 
 /**
  * use api module for ext. api
@@ -59,5 +62,34 @@ describe('Event Sagas', () => {
 
         g.next(putNewEvent({x:1,y:2})).value.should.be.deep.equal(put(startProcessing()))
         g.throw('test-value').value.should.be.deep.equal(put(errorProcessing('test-value')))
+    })
+
+    afterEach(() => {
+        fetchMock.restore()
+    })
+
+    it('should pass for loadNextEventsSaga action. blackbox unit test', () => {
+        fetchMock.get('/api/events/next', {payload: ['1']})
+        fetchMock.get('/api/events?ids=1', {payload: 'test-value-x'})
+        const sagaMiddleware = createSagaMiddleware()
+        const store = configureMockStore([sagaMiddleware])({})
+        sagaMiddleware.run(loadNextEventsSaga)
+        const expectedActions = [
+            loadNextEvents(),
+            startProcessing(),
+            events('test-value-x'),
+            nextEvents(['1']),
+            endProcessing()
+        ]
+
+        store.dispatch(loadNextEvents())
+        return new Promise(res => {
+            store.subscribe(() => {
+                if (store.getActions().length === 5) {
+                    store.getActions().should.be.deep.equal(expectedActions)
+                    res()
+                }
+            })
+        })
     })
 })
